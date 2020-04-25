@@ -1,3 +1,5 @@
+from pprint import pprint
+
 class LexicalAnalyzer():
     reserved_symbols_table = {
         'program': 'simb_program',
@@ -28,11 +30,33 @@ class LexicalAnalyzer():
         '=': 'simb_igual'
     }
 
-    symbols_table = {}
+    symbols_table = []
 
-    def __init__(self, input_string):
-        self.input_string = input_string
+    def __init__(self, input_file):
+        self.input_file = input_file
+
+        try:
+            with open(input_file, 'r') as fp:
+                buffer = ''
+                while True:
+                    buffer = buffer + fp.read(1)
+
+
+        except FileNotFoundError:
+            print('Arquivo nao existe.')
+
+                    
+    def print_symbols_table(self):
+        pprint(self.symbols_table)
+
+    def isIdentifier(self, buffer):
+        return False
     
-    def print_input(self):
-        print(self.input_string)
-        
+    def isNumber(self, buffer):
+        return False
+
+    def isOperator(self, buffer):
+        return False
+
+    def isKeyword(self, buffer):
+        return False
