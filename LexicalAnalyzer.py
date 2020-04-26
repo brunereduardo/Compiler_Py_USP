@@ -41,16 +41,17 @@ class LexicalAnalyzer():
                         char_position += 1
                         if character == ' ' or character == '\n' or self._is_operator(character):
                             
-                            output = self._number(buffer, line_number)
+                            if buffer is not '':
+                                output = self._number(buffer, line_number)
 
-                            if output is None:
-                                if self._is_keyword(buffer):
-                                    output = (f'{buffer}, {self.reserved_words_table[buffer]}')
-                                else:
-                                    output = self._identifier(buffer, line_number)
+                                if output is None:
+                                    if self._is_keyword(buffer):
+                                        output = (f'{buffer}, {self.reserved_words_table[buffer]}')
+                                    else:
+                                        output = self._identifier(buffer, line_number)
 
-                            if output is not None:
-                                self.token_table.append(output)
+                                if output is not None:
+                                    self.token_table.append(output)
 
                             if self._is_operator(character):
                                 # self.token_table.append(self._operator(character, line, line_number, char_position))
@@ -160,6 +161,10 @@ class LexicalAnalyzer():
                 if (char >= 'A' and char <= 'Z') or (char >= 'a' and char <= 'z'):
                     state = 1
                     size_count += 1
+
+                    if len(buffer) == 1:
+                        output = f'{buffer}, ident'
+
                 elif char > ' ':
                     state = 2
 
