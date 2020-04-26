@@ -39,7 +39,31 @@ class LexicalAnalyzer():
             with open(input_file, 'r') as fp:
                 buffer = ''
                 while True:
-                    buffer = buffer + fp.read(1)
+                    c = fp.read(1)
+                    if not c:
+                        break
+                    elif c is ' ' or c is '\n':
+                        if self.isKeyword(buffer):
+                            self.symbols_table.append(f'{buffer}, {self.reserved_symbols_table[buffer]}') 
+                        elif self.isNumber(buffer):
+                            self.symbols_table.append(f'{buffer}, num') 
+                        elif self.isIdentifier(buffer):
+                            self.symbols_table.append(f'{buffer}, ident')
+
+                if self.isOperator(c):
+                    buffer = c
+                    c = fp.read(1)
+
+                    if self.isOperator(c):
+                        buffer = buffer + c
+                        # pegar qual e o operador
+                        buffer = ''
+                    else:
+                        self.symbols_table[buffer] = self.reserved_symbols_table[buffer]
+                        buffer = ''
+                else:
+                    buffer = buffer + c
+
 
 
         except FileNotFoundError:
