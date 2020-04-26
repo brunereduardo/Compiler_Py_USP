@@ -51,6 +51,7 @@ class LexicalAnalyzer():
                             self.symbols_table.append(f'{buffer}, ident')
 
                 if self.isOperator(c):
+                    # tratar buffer antes de preencher
                     buffer = c
                     c = fp.read(1)
 
