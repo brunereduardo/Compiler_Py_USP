@@ -60,7 +60,9 @@ class LexicalAnalyzer():
                                 self.token_table.append(output)
 
                             if self._is_operator(character):
-                                self.token_table.append(self._operator(character, line, line_number, char_position))
+                                ouput = self._operator(character, line, line_number, char_position)
+                                if ouput is not None:
+                                    self.token_table.append(ouput)
 
                             buffer = ''
 
@@ -163,9 +165,15 @@ class LexicalAnalyzer():
                     elif char_tmp == '<':
                         state = 4
                     elif char_tmp == '=':
-                        state = 8
+                        if line[i - 1] != ':':
+                            state = 8
+                        else:
+                            state = -1
                     elif char_tmp == '>':
-                        state = 9
+                        if line[i - 1] != '<':
+                            state = 9
+                        else:
+                            state = -1
                     elif char_tmp == '+':
                         state = 12
                     elif char_tmp == '-':

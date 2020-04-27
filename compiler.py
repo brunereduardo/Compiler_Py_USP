@@ -10,8 +10,9 @@ def main():
 
         lexAnalyzer = LexicalAnalyzer(sys.argv[1])
 
-        for item in lexAnalyzer.get_token_table():
-            print(item)
+        with open('saida.txt', 'w') as fp:
+            for item in lexAnalyzer.get_token_table():
+                fp.write(item + '\n')
     except FileNotFoundError:
         print('ERRO: Arquivo nao existe.')
     except Exception as ex:
