@@ -125,34 +125,39 @@ class LexicalAnalyzer():
                         state = 4
                         
                 elif state == 1:
-                    if i >= len(line) - 1:
-                        output = f'{line[char_position, i]}, ERRO: {line_number} - Identacao dos parenteses'
+                    if i >= len(line) - 1 and char_tmp != ')':
+                        line_tmp = line.replace("\n", "")
+                        output = f'{line_tmp}, ERRO: {line_number} - Identacao dos parenteses'
                     elif char_tmp == '(':
                         state = 2
                     elif char_tmp == ')':
                         state = 0
 
                 elif state == 2:
-                    if i >= len(line) - 1:
-                        output = f'{line[char_position, i]}, ERRO: {line_number} - Identacao dos parenteses'
+                    if i >= len(line) - 1 and char_tmp != ')':
+                        line_tmp = line.replace("\n", "")
+                        output = f'{line_tmp}, ERRO: {line_number} - Identacao dos parenteses'
                     elif char_tmp == '(':
                         state = 3
                     elif char_tmp == ')':
                         state = 1
 
                 elif state == 3:
-                    if i >= len(line) - 1:
-                        output = f'{line[char_position, i]}, ERRO: {line_number} - Identacao dos parenteses'
+                    if i >= len(line) - 1 and char_tmp != ')':
+                        line_tmp = line.replace("\n", "")
+                        output = f'{line_tmp}, ERRO: {line_number} - Identacao dos parenteses'
                     elif char_tmp == '(':
                         state = 5
                     elif char_tmp == ')':
                         state = 2
 
                 elif state == 4:
-                    output = f'{line[char_position, i]}, ERRO: {line_number} - Nao ha parenteses abertos'
+                    line_tmp = line.replace("\n", "")
+                    output = f'{line_tmp}, ERRO: {line_number} - Nao ha parenteses abertos'
 
                 elif state == 5:
-                    output = f'{line[char_position, i]}, ERRO: {line_number} - Maximo de parenteses atingido'
+                    line_tmp = line.replace("\n", "")
+                    output = f'{line_tmp}, ERRO: {line_number} - Maximo de parenteses atingido'
                     
         else:
             state = 0
