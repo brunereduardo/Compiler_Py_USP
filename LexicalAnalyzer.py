@@ -17,7 +17,8 @@ class LexicalAnalyzer():
         'else': 'simb_else',
         'then': 'simb_then',
         'if': 'simb_if',
-        'do': 'simb_do'
+        'do': 'simb_do',
+        'to': 'simb_to'
     }
 
     # Lista de Todos os Tokens
@@ -37,11 +38,17 @@ class LexicalAnalyzer():
 
                     line_number += 1
                     char_position = -1
+
+                    begin_comment, end_comment = self._commentary(line, line_number, char_position)
+
                     for character in line:
                         char_position += 1
-                        if character == ' ' or character == '\n' or self._is_operator(character):
+
+                        if char_position >= begin_comment and char_position <= end_comment:
+                            continue
+                        elif character == ' ' or character == '\n' or self._is_operator(character):
                             
-                            if buffer is not '':
+                            if buffer != '':
                                 output = self._number(buffer, line_number)
 
                                 if output is None:
@@ -50,12 +57,10 @@ class LexicalAnalyzer():
                                     else:
                                         output = self._identifier(buffer, line_number)
 
-                                if output is not None:
-                                    self.token_table.append(output)
+                                self.token_table.append(output)
 
                             if self._is_operator(character):
-                                # self.token_table.append(self._operator(character, line, line_number, char_position))
-                                self.token_table.append('------------------------')
+                                self.token_table.append(self._operator(character, line, line_number, char_position))
 
                             buffer = ''
 
@@ -64,6 +69,184 @@ class LexicalAnalyzer():
 
         except FileNotFoundError:
             raise FileNotFoundError()
+
+    def _commentary(self, line, line_number, char_position):
+        begin = -1
+        end = -1
+
+        if '{' in line or '}' in line:
+            state = 0
+            for i in range(char_position, len(line)):
+                char_tmp = line[i]
+
+                if state == 0:
+                    if char_tmp == '{':
+                        state = 1
+                        begin = i
+                    elif char_tmp == '}':
+                        state = 3
+
+                elif state == 1:
+                    if i >= len(line) - 1:
+                        self.token_table.append(f'Comentario, ERRO: {line_number} - Fechar comentario')
+                        end = begin
+                    elif char_tmp == '}':
+                        state = 2
+
+                elif state == 2:
+                    end = i
+                    break
+
+                elif state == 3:
+                    self.token_table.append(f'Comentario, ERRO: {line_number} - Fechamento de comentario sem abertura')
+                    end = begin = i - 1
+ 
+        return begin, end
+
+
+    def _operator(self, character, line, line_number, char_position):
+        output = None
+
+        if character == ')':    output = '), simb_fpar'
+        elif character == '(':
+            state = 0
+
+            for i in range(char_position, len(line)):
+                char_tmp = line[i]
+
+                if state == 0:
+                    if i >= len(line) - 1:
+                        output = '(, simb_apar'  
+                    elif char_tmp == '(':
+                        state = 1
+                    elif char_tmp == ')':
+                        state = 4
+                        
+                elif state == 1:
+                    if i >= len(line) - 1:
+                        output = f'{line[char_position, i]}, ERRO: {line_number} - Identacao dos parenteses'
+                    elif char_tmp == '(':
+                        state = 2
+                    elif char_tmp == ')':
+                        state = 0
+
+                elif state == 2:
+                    if i >= len(line) - 1:
+                        output = f'{line[char_position, i]}, ERRO: {line_number} - Identacao dos parenteses'
+                    elif char_tmp == '(':
+                        state = 3
+                    elif char_tmp == ')':
+                        state = 1
+
+                elif state == 3:
+                    if i >= len(line) - 1:
+                        output = f'{line[char_position, i]}, ERRO: {line_number} - Identacao dos parenteses'
+                    elif char_tmp == '(':
+                        state = 5
+                    elif char_tmp == ')':
+                        state = 2
+
+                elif state == 4:
+                    output = f'{line[char_position, i]}, ERRO: {line_number} - Nao ha parenteses abertos'
+
+                elif state == 5:
+                    output = f'{line[char_position, i]}, ERRO: {line_number} - Maximo de parenteses atingido'
+                    
+        else:
+            state = 0
+            for i in range(char_position, len(line)):
+                char_tmp = line[i]
+
+                if state == 0:
+                    if char_tmp == ':':
+                        state = 1
+                    elif char_tmp == '<':
+                        state = 4
+                    elif char_tmp == '=':
+                        state = 8
+                    elif char_tmp == '>':
+                        state = 9
+                    elif char_tmp == '+':
+                        state = 12
+                    elif char_tmp == '-':
+                        state = 13
+                    elif char_tmp == '*':
+                        state = 14
+                    elif char_tmp == '/':
+                        state = 15
+                    elif char_tmp == '.':
+                        state = 16
+                    elif char_tmp == ';':
+                        state = 17
+                    elif char_tmp == ',':
+                        state = 18
+
+                elif state == 1:
+                    if char_tmp == '=':
+                        state = 2
+                    else:
+                        state = 3
+                        
+                elif state == 2:
+                    output = ':=, simb_atribuicao'
+
+                elif state == 3:
+                    output = ':, simb_dp'
+
+                elif state == 4:
+                    if char_tmp == '=':
+                        state = 5
+                    elif char_tmp == '>':
+                        state = 6
+                    else:
+                        state = 7
+
+                elif state == 5:
+                    output = '<=, simb_menor_igual'
+
+                elif state == 6:
+                    output = '<>, simb_dif'
+
+                elif state == 7:
+                    output = '<, simb_menor'
+
+                elif state == 8:
+                    output = '=, simb_igual'
+
+                elif state == 9:
+                    if char_tmp == '=':
+                        state = 10
+                    else:
+                        state = 11
+
+                elif state == 10:
+                    output = '>=, simb_maior_igual'
+
+                elif state == 11:
+                    output = '>, simb_maior'
+
+                elif state == 12:
+                    output = '+, simb_mais'
+
+                elif state == 13:
+                    output = '-, simb_menos'
+
+                elif state == 14:
+                    output = '*, simb_vezes'
+
+                elif state == 15:
+                    output = '/, simb_dividir'
+
+                elif state == 16:
+                    output = '., simb_ponto'
+
+                elif state == 17:
+                    output = ';, simb_ponto_virgula'
+
+                elif state == 18:
+                    output = ',, simb_virgula'
+
+        return output
         
 
     def _is_operator(self, character):
@@ -78,8 +261,6 @@ class LexicalAnalyzer():
         elif character == '(':  is_operator = True
         elif character == ')':  is_operator = True
         elif character == '=':  is_operator = True
-        elif character == '{':  is_operator = True
-        elif character == '}':  is_operator = True
         elif character == ',':  is_operator = True
         elif character == '>':  is_operator = True
         elif character == '<':  is_operator = True
@@ -107,6 +288,10 @@ class LexicalAnalyzer():
                 if character >= '0' and character <= '9':
                     state = 2
                     size_count += 1
+
+                    if len(buffer) == 1:
+                        output = f'{buffer}, num_inteiro'
+
                 elif character == '-' or character == '+':
                     state = 1
                 elif character > ' ':
@@ -123,20 +308,30 @@ class LexicalAnalyzer():
                 if size_count >= 32:
                     state = 4
                 elif i >= len(buffer) - 1:
-                    output = f'{buffer}, num_inteiro'
+                    if character >= '0' and character <= '9':
+                        output = f'{buffer}, num_inteiro'
+                    else:
+                        output = f'{buffer}, ERRO: {line_number}:{buffer} - Numero mal formado'
                     break
                 elif character == '.':
                     state = 3
-                elif character < '0' or character > '9':
+                elif character >= '0' and character <= '9':
+                    size_count += 1
+                else:
                     state = 6
 
             elif state == 3:
                 if size_count >= 32:
                     state = 4
                 elif i >= len(buffer) - 1:
-                    output = f'{buffer}, num_real'
+                    if character >= '0' and character <= '9':
+                        output = f'{buffer}, num_real'
+                    else:
+                        output = f'{buffer}, ERRO: {line_number}:{buffer} - Numero mal formado'
                     break
-                elif character < '0' or character > '9':
+                elif character >= '0' and character <= '9':
+                    size_count += 1
+                else:
                     state = 6
                     
             elif state == 4:
