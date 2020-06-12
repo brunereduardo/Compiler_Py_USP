@@ -1,2 +1,3 @@
 # Voa_Compila
- Trabalho de Compiladores (TEST)
+ Para preparar o terreno para a compila ̧c ̃ao, respeitando a linguagem utilizada, python,os  passos  essenciais  do  c ́odigo  fonte  do  analisador  sint ́atico-  scriptySintatico.py  -,  s ̃ao  ba-sicamente  ter  a  vers ̃ao  b ́asica,  python  3  ou  superior,  para  que  se  possa  ter  acesso  a  uminterpretador  da  linguagem  utilizada  e,  assumindo  que  se  tenha  acesso  a  um  terminal  ouuma IDE para Python, basta rodar o c ́odigo do compilador - compiler.py  -para que o mesmoutilize o analisador l ́exico, e o analisador sint ́atico, na entrada do arquivo txt a ser analisado.Por fim o mesmo gera a saida - saida.txt  -com as an ́alises feitas pelo l ́exico e sint ́atico, com ointuito de ser utilizado em futuras implementa ̧c ̃oes.  Abaixo temos um exemplo de execu ̧c ̃ao.Para tal basta utilizar a linha de comando a baixo:
+ python3  compiler.py <caminho/nome_do_arquivo_de_entrada.txt >
