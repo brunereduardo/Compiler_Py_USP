@@ -13,6 +13,7 @@ def main():
         with open('saida.txt', 'w') as fp:
             for item in lexAnalyzer.get_token_table():
                 fp.write(item + '\n')
+            print('Sucesso!', '\n')
     except FileNotFoundError:
         print('ERRO: Arquivo nao existe.')
     except Exception as ex:
