@@ -10,15 +10,56 @@ class SyntacticAnalyzer() :
     def __init__(self, uma_copida_do_lexicalAnalyser?):
         self.atr1 = uma_copida_do_lexicalAnalyser? 
 
-    def outraos procedimentos():
+    def dc_V(simb):
+
+        if(simb != var):
+            exit();
+        
+        if (simb == var) : 
+            simb = obter_simbolo()
+        
+        elif : 
+            raise "ERRO"
+        
+        if (simb == ident) : 
+            simb = obter_simbolo();
+            while (simb == simb_v) :
+                simb = obter_simbolo()
+                if (simb == ident) :
+                    simb = obter_simbolo()
+                elif : 
+                    raise "ERRO"
+        elif:
+            raise "ERRO"
+
+        if (simb == simb_dp) : 
+            simb = obter_simbolo();
+        
+        elif :
+            raise "ERRO"
+
+        if ((simb == real) or (simb == integer)) : 
+            simb = obter_simbolo();
+        
+        elif :
+            raise "ERRO"
+
+        if (simb == simb_pv) :
+            simb = obter_simbolo();
+        
+        elif :
+            raise "ERRO"
+
+        if ((terminou_cadeia == FALSE) and (simb == var)) :
+            dc_v();
 
     def begin():   
         chamada do léxico para obtenção dos simbolos 
         def obtrsimbl(LexicalAnalyzer):
-            x = pega o simbolo com o tolken
+            simb = pega o simbolo com o tolken
         
         chama o procedimento inicial program
-        #program(x)
+        #program(simb)
 
         if(item in lexAnalyzer.get_token_table() = fim) :
             printf("sucesso", "\n")
