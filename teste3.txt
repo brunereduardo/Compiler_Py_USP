@@ -1,0 +1,7 @@
+program teste3;{teste 3 - testando erro de comentário não fechado, checando comportamento com variável não declarada}
+var x: integer;
+begin
+read(a);
+{lendo a variável e imprimindo
+write(x);
+end.

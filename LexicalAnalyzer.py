@@ -32,7 +32,7 @@ class LexicalAnalyzer():
         buffer = ''
 
         try:
-            with open(input_file, 'r') as fp:
+            with open(input_file, 'r', encoding="ISO-8859-1") as fp:
                 for line in fp:
                     line = line.replace('\t', '')
 
@@ -40,6 +40,9 @@ class LexicalAnalyzer():
                     char_position = -1
 
                     begin_comment, end_comment = self._commentary(line, line_number, char_position)
+
+                    if (begin_comment == -1 or end_comment == -1) and begin_comment != end_comment:
+                        continue
 
                     for character in line:
                         char_position += 1
@@ -91,7 +94,7 @@ class LexicalAnalyzer():
                 elif state == 1:
                     if i >= len(line) - 1:
                         self.token_table.append(f'Comentario, ERRO: {line_number} - Fechar comentario')
-                        end = begin
+
                     elif char_tmp == '}':
                         state = 2
 
@@ -101,7 +104,6 @@ class LexicalAnalyzer():
 
                 elif state == 3:
                     self.token_table.append(f'Comentario, ERRO: {line_number} - Fechamento de comentario sem abertura')
-                    end = begin = i - 1
  
         return begin, end
 
@@ -374,6 +376,8 @@ class LexicalAnalyzer():
                         output = f'{buffer}, ident'
 
                 elif char > ' ':
+                    if len(buffer) == 1:
+                        output = f'{buffer}, ERRO: {line_number}:{buffer} - Identificador com caracter invalido'
                     state = 2
 
             elif state == 1:

@@ -1,0 +1,21 @@
+program, simb_program
+teste3, ident
+;, simb_ponto_virgula
+var, simb_var
+x, ident
+:, simb_dp
+integer, simb_tipo
+;, simb_ponto_virgula
+begin, simb_begin
+read, simb_read
+(, simb_apar
+a, ident
+), simb_fpar
+;, simb_ponto_virgula
+Comentario, ERRO: 5 - Fechar comentario
+write, simb_write
+(, simb_apar
+x, ident
+), simb_fpar
+;, simb_ponto_virgula
+end, simb_end

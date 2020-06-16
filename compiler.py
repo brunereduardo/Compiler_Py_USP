@@ -2,7 +2,7 @@ import sys
 from pprint import pprint
 
 from LexicalAnalyzer import LexicalAnalyzer
-from syntacticAnalyzer import SyntacticAnalyzer
+# from SyntacticAnalyzer import SyntacticAnalyzer
 
 class PanicMode(Exception) :
     #colocar as funções aqui
@@ -17,7 +17,7 @@ def main():
             raise Exception('ERRO: Caminho para arquivo codigo fonte nao digitado.')
 
         lexAnalyzer = LexicalAnalyzer(sys.argv[1])
-        synAnalyzer = SyntacticAnalyzer()
+        # synAnalyzer = SyntacticAnalyzer()
         with open('saida.txt', 'w') as fp:
             for item in lexAnalyzer.get_token_table():
                 fp.write(item + '\n')
