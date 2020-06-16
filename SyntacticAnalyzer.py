@@ -64,7 +64,7 @@ class SyntacticAnalyzer() :
 
     def begin():   
         #chamada do léxico para obtenção dos simbolos 
-        simb = obter_simbolo();
+        simb = obter_simbolo(LexicalAnalyzer);
         
         #chama o procedimento inicial program
         #program(simb)
