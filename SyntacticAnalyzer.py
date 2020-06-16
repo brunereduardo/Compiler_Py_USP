@@ -13,7 +13,12 @@ class SyntacticAnalyzer() :
     def obter_simbolo(LexicalAnalyzer) : 
         return lexAnalyzer.get_token_table()
 
-
+    def program(simb):
+        a
+    
+    def cmd(simb):
+        b
+    
     def dc_V(simb):
 
         if(simb != var):
