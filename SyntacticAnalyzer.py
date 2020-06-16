@@ -1,5 +1,5 @@
 from pprint import pprint
-
+from LexicalAnalyzer import LexicalAnalyzer
 
 class SyntacticAnalyzer() :
 
@@ -9,6 +9,10 @@ class SyntacticAnalyzer() :
     '''
     def __init__(self, uma_copida_do_lexicalAnalyser?):
         self.atr1 = uma_copida_do_lexicalAnalyser? 
+
+    def obter_simbolo(LexicalAnalyzer) : 
+        return lexAnalyzer.get_token_table()
+
 
     def dc_V(simb):
 
@@ -54,11 +58,10 @@ class SyntacticAnalyzer() :
             dc_v();
 
     def begin():   
-        chamada do léxico para obtenção dos simbolos 
-        def obtrsimbl(LexicalAnalyzer):
-            simb = pega o simbolo com o tolken
+        #chamada do léxico para obtenção dos simbolos 
+        simb = obter_simbolo();
         
-        chama o procedimento inicial program
+        #chama o procedimento inicial program
         #program(simb)
 
         if(item in lexAnalyzer.get_token_table() = fim) :
