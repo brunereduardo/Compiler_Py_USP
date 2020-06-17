@@ -56,7 +56,7 @@ class LexicalAnalyzer():
 
                                 if output is None:
                                     if self._is_keyword(buffer):
-                                        output = (f'{buffer}, {self.reserved_words_table[buffer]}')
+                                        output = {'token': self.reserved_words_table[buffer], 'lexema': buffer, 'line': line_number}
                                     else:
                                         output = self._identifier(buffer, line_number)
 
@@ -93,7 +93,7 @@ class LexicalAnalyzer():
 
                 elif state == 1:
                     if i >= len(line) - 1:
-                        self.token_table.append(f'Comentario, ERRO: {line_number} - Fechar comentario')
+                        self.token_table.append({'lexema': '{', 'error': 'Comentario nao fechado', 'line': line_number})
 
                     elif char_tmp == '}':
                         state = 2
@@ -103,7 +103,7 @@ class LexicalAnalyzer():
                     break
 
                 elif state == 3:
-                    self.token_table.append(f'Comentario, ERRO: {line_number} - Fechamento de comentario sem abertura')
+                    self.token_table.append({'lexema': '}', 'error': 'Comentario fechado sem abertura', 'line': line_number})
  
         return begin, end
 
@@ -111,55 +111,55 @@ class LexicalAnalyzer():
     def _operator(self, character, line, line_number, char_position):
         output = None
 
-        if character == ')':    output = '), simb_fpar'
-        elif character == '(':
-            state = 0
+        if character == ')':    output = {'token': 'simb_fpar', 'lexema': ')', 'line': line_number}
+        elif character == '(':  output = {'token': 'simb_par', 'lexema': '(', 'line': line_number}
+            # state = 0
 
-            for i in range(char_position, len(line)):
-                char_tmp = line[i]
+            # for i in range(char_position, len(line)):
+            #     char_tmp = line[i]
 
-                if state == 0:
-                    if i >= len(line) - 1:
-                        output = '(, simb_apar'  
-                    elif char_tmp == '(':
-                        state = 1
-                    elif char_tmp == ')':
-                        state = 4
+            #     if state == 0:
+            #         if i >= len(line) - 1:
+            #             output = '(, simb_apar'  
+            #         elif char_tmp == '(':
+            #             state = 1
+            #         elif char_tmp == ')':
+            #             state = 4
                         
-                elif state == 1:
-                    if i >= len(line) - 1 and char_tmp != ')':
-                        line_tmp = line.replace("\n", "")
-                        output = f'{line_tmp}, ERRO: {line_number} - Identacao dos parenteses'
-                    elif char_tmp == '(':
-                        state = 2
-                    elif char_tmp == ')':
-                        state = 0
+            #     elif state == 1:
+            #         if i >= len(line) - 1 and char_tmp != ')':
+            #             line_tmp = line.replace("\n", "")
+            #             output = f'{line_tmp}, ERRO: {line_number} - Identacao dos parenteses'
+            #         elif char_tmp == '(':
+            #             state = 2
+            #         elif char_tmp == ')':
+            #             state = 0
 
-                elif state == 2:
-                    if i >= len(line) - 1 and char_tmp != ')':
-                        line_tmp = line.replace("\n", "")
-                        output = f'{line_tmp}, ERRO: {line_number} - Identacao dos parenteses'
-                    elif char_tmp == '(':
-                        state = 3
-                    elif char_tmp == ')':
-                        state = 1
+            #     elif state == 2:
+            #         if i >= len(line) - 1 and char_tmp != ')':
+            #             line_tmp = line.replace("\n", "")
+            #             output = f'{line_tmp}, ERRO: {line_number} - Identacao dos parenteses'
+            #         elif char_tmp == '(':
+            #             state = 3
+            #         elif char_tmp == ')':
+            #             state = 1
 
-                elif state == 3:
-                    if i >= len(line) - 1 and char_tmp != ')':
-                        line_tmp = line.replace("\n", "")
-                        output = f'{line_tmp}, ERRO: {line_number} - Identacao dos parenteses'
-                    elif char_tmp == '(':
-                        state = 5
-                    elif char_tmp == ')':
-                        state = 2
+            #     elif state == 3:
+            #         if i >= len(line) - 1 and char_tmp != ')':
+            #             line_tmp = line.replace("\n", "")
+            #             output = f'{line_tmp}, ERRO: {line_number} - Identacao dos parenteses'
+            #         elif char_tmp == '(':
+            #             state = 5
+            #         elif char_tmp == ')':
+            #             state = 2
 
-                elif state == 4:
-                    line_tmp = line.replace("\n", "")
-                    output = f'{line_tmp}, ERRO: {line_number} - Nao ha parenteses abertos'
+            #     elif state == 4:
+            #         line_tmp = line.replace("\n", "")
+            #         output = f'{line_tmp}, ERRO: {line_number} - Nao ha parenteses abertos'
 
-                elif state == 5:
-                    line_tmp = line.replace("\n", "")
-                    output = f'{line_tmp}, ERRO: {line_number} - Maximo de parenteses atingido'
+            #     elif state == 5:
+            #         line_tmp = line.replace("\n", "")
+            #         output = f'{line_tmp}, ERRO: {line_number} - Maximo de parenteses atingido'
                     
         else:
             state = 0
@@ -203,10 +203,10 @@ class LexicalAnalyzer():
                         state = 3
                         
                 elif state == 2:
-                    output = ':=, simb_atribuicao'
+                    output = {'token': 'simb_atribuicao', 'lexema': ':=', 'line': line_number}
 
                 elif state == 3:
-                    output = ':, simb_dp'
+                    output = {'token': 'simb_dp', 'lexema': ':', 'line': line_number}
 
                 elif state == 4:
                     if char_tmp == '=':
@@ -217,16 +217,16 @@ class LexicalAnalyzer():
                         state = 7
 
                 elif state == 5:
-                    output = '<=, simb_menor_igual'
+                    output = {'token': 'simb_menor_igual', 'lexema': '<=', 'line': line_number}
 
                 elif state == 6:
-                    output = '<>, simb_dif'
+                    output = {'token': 'simb_dif', 'lexema': '<>', 'line': line_number}
 
                 elif state == 7:
-                    output = '<, simb_menor'
+                    output = {'token': 'simb_menor', 'lexema': '<', 'line': line_number}
 
                 elif state == 8:
-                    output = '=, simb_igual'
+                    output = {'token': 'simb_igual', 'lexema': '=', 'line': line_number}
 
                 elif state == 9:
                     if char_tmp == '=':
@@ -235,31 +235,31 @@ class LexicalAnalyzer():
                         state = 11
 
                 elif state == 10:
-                    output = '>=, simb_maior_igual'
+                    output = {'token': 'simb_maior_igual', 'lexema': '>=', 'line': line_number}
 
                 elif state == 11:
-                    output = '>, simb_maior'
+                    output = {'token': 'simb_maior', 'lexema': '>', 'line': line_number}
 
                 elif state == 12:
-                    output = '+, simb_mais'
+                    output = {'token': 'simb_mais', 'lexema': '+', 'line': line_number}
 
                 elif state == 13:
-                    output = '-, simb_menos'
+                    output = {'token': 'simb_menos', 'lexema': '-', 'line': line_number}
 
                 elif state == 14:
-                    output = '*, simb_vezes'
+                    output = {'token': 'simb_vezes', 'lexema': '*', 'line': line_number}
 
                 elif state == 15:
-                    output = '/, simb_dividir'
+                    output = {'token': 'simb_dividir', 'lexema': '/', 'line': line_number}
 
                 elif state == 16:
-                    output = '., simb_ponto'
+                    output = {'token': 'simb_ponto', 'lexema': '.', 'line': line_number}
 
                 elif state == 17:
-                    output = ';, simb_ponto_virgula'
+                    output = {'token': 'simb_ponto_virgula', 'lexema': ';', 'line': line_number}
 
                 elif state == 18:
-                    output = ',, simb_virgula'
+                    output = {'token': 'simb_virgula', 'lexema': ',', 'line': line_number}
 
         return output
         
@@ -305,7 +305,7 @@ class LexicalAnalyzer():
                     size_count += 1
 
                     if len(buffer) == 1:
-                        output = f'{buffer}, num_inteiro'
+                        output = {'token': 'num_inteiro', 'lexema': buffer, 'line': line_number}
 
                 elif character == '-' or character == '+':
                     state = 1
@@ -324,9 +324,9 @@ class LexicalAnalyzer():
                     state = 4
                 elif i >= len(buffer) - 1:
                     if character >= '0' and character <= '9':
-                        output = f'{buffer}, num_inteiro'
+                        output = {'token': 'num_inteiro', 'lexema': buffer, 'line': line_number}
                     else:
-                        output = f'{buffer}, ERRO: {line_number}:{buffer} - Numero mal formado'
+                        output = {'lexema': buffer, 'error': 'Numero mal formado', 'line': line_number}
                     break
                 elif character == '.':
                     state = 3
@@ -340,9 +340,9 @@ class LexicalAnalyzer():
                     state = 4
                 elif i >= len(buffer) - 1:
                     if character >= '0' and character <= '9':
-                        output = f'{buffer}, num_real'
+                        output = {'token': 'num_real', 'lexema': buffer, 'line': line_number}
                     else:
-                        output = f'{buffer}, ERRO: {line_number}:{buffer} - Numero mal formado'
+                        output = {'lexema': buffer, 'error': 'Numero mal formado', 'line': line_number}
                     break
                 elif character >= '0' and character <= '9':
                     size_count += 1
@@ -350,11 +350,11 @@ class LexicalAnalyzer():
                     state = 6
                     
             elif state == 4:
-                output = f'{buffer}, ERRO: {line_number}:{buffer} - Numero com excesso de tamanho'
+                output = {'lexema': buffer, 'error': 'Numero com excesso de tamanho', 'line': line_number}
                 break
 
             elif state == 6:
-                output = f'{buffer}, ERRO: {line_number}:{buffer} - Numero mal formado'
+                output = {'lexema': buffer, 'error': 'Numero mal formado', 'line': line_number}
                 break
 
         return output
@@ -373,28 +373,28 @@ class LexicalAnalyzer():
                     size_count += 1
 
                     if len(buffer) == 1:
-                        output = f'{buffer}, ident'
+                        output = {'token': 'ident', 'lexema': buffer, 'line': line_number}
 
                 elif char > ' ':
                     if len(buffer) == 1:
-                        output = f'{buffer}, ERRO: {line_number}:{buffer} - Identificador com caracter invalido'
+                        output = {'lexema': buffer, 'error': 'Identificador com caracter invalido', 'line': line_number}
                     state = 2
 
             elif state == 1:
                 if size_count >= 32:
                     state = 3
                 elif i >= len(buffer) - 1:
-                    output = f'{buffer}, ident'
+                    output = {'token': 'ident', 'lexema': buffer, 'line': line_number}
                     break
                 else:
                     size_count += 1
 
             elif state == 2:
-                output = f'{buffer}, ERRO: {line_number}:{buffer} - Identificador com caracter invalido'
+                output = {'lexema': buffer, 'error': 'Identificador com caracter invalido', 'line': line_number}
                 break
 
             elif state == 3:
-                output = f'{buffer}, ERRO: {line_number}:{buffer} - Identificador com excesso de tamanho'
+                output = {'lexema': buffer, 'error': 'Identificador com excesso de tamanho', 'line': line_number}
                 break
 
         return output

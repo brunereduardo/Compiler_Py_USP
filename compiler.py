@@ -2,11 +2,7 @@ import sys
 from pprint import pprint
 
 from LexicalAnalyzer import LexicalAnalyzer
-<<<<<<< HEAD
-from SyntacticAnalyzer import SyntacticAnalyzer
-=======
-from SyntacticAnalyzer import SyntacticAnalyzer
->>>>>>> 58cf3efa998706f7206287c426f876dc796ad480
+# from SyntacticAnalyzer import SyntacticAnalyzer
 
 class PanicMode(Exception) :
     #colocar as funções aqui
@@ -21,15 +17,10 @@ def main():
             raise Exception('ERRO: Caminho para arquivo codigo fonte nao digitado.')
 
         lexAnalyzer = LexicalAnalyzer(sys.argv[1])
-<<<<<<< HEAD
-        synAnalyzer = SyntacticAnalyzer(lexAnalyzer)
-=======
-        synAnalyzer = SyntacticAnalyzer(lexAnalyzer)
->>>>>>> 58cf3efa998706f7206287c426f876dc796ad480
+        # synAnalyzer = SyntacticAnalyzer(lexAnalyzer)
         with open('saida.txt', 'w') as fp:
             for item in lexAnalyzer.get_token_table(): # aqui precisa ser sincornizada a escrita com o sintático.
-                fp.write(item + '\n')
-                #fp.write(itemS + '\n')
+                fp.write(str(item) + '\n')
             print('Sucesso!', '\n')
     except FileNotFoundError:
         print('ERRO: Arquivo nao existe.')

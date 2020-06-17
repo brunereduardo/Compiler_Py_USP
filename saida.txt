@@ -1,21 +1,34 @@
-program, simb_program
-teste3, ident
-;, simb_ponto_virgula
-var, simb_var
-x, ident
-:, simb_dp
-integer, simb_tipo
-;, simb_ponto_virgula
-begin, simb_begin
-read, simb_read
-(, simb_apar
-a, ident
-), simb_fpar
-;, simb_ponto_virgula
-Comentario, ERRO: 5 - Fechar comentario
-write, simb_write
-(, simb_apar
-x, ident
-), simb_fpar
-;, simb_ponto_virgula
-end, simb_end
+{'token': 'simb_program', 'lexema': 'program', 'line': 1}
+{'token': 'ident', 'lexema': 'outroteste', 'line': 1}
+{'token': 'simb_ponto_virgula', 'lexema': ';', 'line': 1}
+{'token': 'simb_var', 'lexema': 'var', 'line': 3}
+{'token': 'ident', 'lexema': 'a', 'line': 3}
+{'token': 'simb_virgula', 'lexema': ',', 'line': 3}
+{'token': 'ident', 'lexema': 'minhavariavel', 'line': 3}
+{'token': 'simb_dp', 'lexema': ':', 'line': 3}
+{'token': 'simb_tipo', 'lexema': 'integer', 'line': 3}
+{'token': 'simb_ponto_virgula', 'lexema': ';', 'line': 3}
+{'token': 'simb_begin', 'lexema': 'begin', 'line': 4}
+{'token': 'ident', 'lexema': 'readd', 'line': 5}
+{'token': 'simb_par', 'lexema': '(', 'line': 5}
+{'token': 'ident', 'lexema': 'minhavariavel', 'line': 5}
+{'token': 'simb_virgula', 'lexema': ',', 'line': 5}
+{'lexema': '@', 'error': 'Identificador com caracter invalido', 'line': 5}
+{'token': 'simb_virgula', 'lexema': ',', 'line': 5}
+{'token': 'num_inteiro', 'lexema': '1', 'line': 5}
+{'token': 'simb_ponto', 'lexema': '.', 'line': 5}
+{'token': 'ident', 'lexema': 'a23', 'line': 5}
+{'token': 'simb_fpar', 'lexema': ')', 'line': 5}
+{'token': 'simb_ponto_virgula', 'lexema': ';', 'line': 5}
+{'token': 'ident', 'lexema': 'a', 'line': 6}
+{'token': 'simb_atribuicao', 'lexema': ':=', 'line': 6}
+{'token': 'num_inteiro', 'lexema': '2', 'line': 6}
+{'token': 'simb_vezes', 'lexema': '*', 'line': 6}
+{'token': 'simb_par', 'lexema': '(', 'line': 6}
+{'token': 'ident', 'lexema': 'minhavariavel', 'line': 6}
+{'token': 'simb_mais', 'lexema': '+', 'line': 6}
+{'token': 'num_inteiro', 'lexema': '3', 'line': 6}
+{'token': 'simb_fpar', 'lexema': ')', 'line': 6}
+{'token': 'simb_ponto_virgula', 'lexema': ';', 'line': 6}
+{'token': 'simb_end', 'lexema': 'end', 'line': 7}
+{'token': 'simb_ponto', 'lexema': '.', 'line': 7}
