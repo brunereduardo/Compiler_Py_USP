@@ -1,8 +1,9 @@
-class PanicMode() :
+class Errors() :
     def __init__(self):
         self.errors = {}
 
-    def panic_has_errors(self):
+    @property
+    def has_errors(self):
         return self.errors
 
     def add_error(self, analyzer, line, error):

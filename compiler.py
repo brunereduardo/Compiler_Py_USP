@@ -1,8 +1,10 @@
 import sys
 
 from LexicalAnalyzer import LexicalAnalyzer
-# from SyntacticAnalyzer import SyntacticAnalyzer
-from PanicMode import PanicMode
+from SyntacticAnalyzer import SyntacticAnalyzer
+from Errors import Errors
+
+from pprint import pprint
 
 
 def main():
@@ -10,14 +12,14 @@ def main():
         if len(sys.argv) < 2:
             raise Exception('ERRO: Caminho para arquivo codigo fonte nao digitado.')
 
-        panic_mode = PanicMode()
+        errors = Errors()
 
-        lexAnalyzer = LexicalAnalyzer(sys.argv[1], panic_mode)
-        # synAnalyzer = SyntacticAnalyzer(lexAnalyzer, panic_mode)
+        lexAnalyzer = LexicalAnalyzer(sys.argv[1], errors)
+        SyntacticAnalyzer(lexAnalyzer, errors)
 
         # with open('saida.txt', 'w') as fp:
-        if panic_mode.panic_has_errors():
-            print(panic_mode.errors)
+        if errors.has_errors:
+            pprint(errors.errors)
         else:
             print('Sucesso!')
     except Exception as ex:
