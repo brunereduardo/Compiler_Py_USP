@@ -1,14 +1,8 @@
 import sys
-from pprint import pprint
 
 from LexicalAnalyzer import LexicalAnalyzer
 # from SyntacticAnalyzer import SyntacticAnalyzer
-
-class PanicMode(Exception) :
-    #colocar as funções aqui
-    # e preciso voltar para o tolken anterior
-    def display(self):
-        print("TESTE", "\n")
+from PanicMode import PanicMode
 
 
 def main():
@@ -16,16 +10,16 @@ def main():
         if len(sys.argv) < 2:
             raise Exception('ERRO: Caminho para arquivo codigo fonte nao digitado.')
 
-        lexAnalyzer = LexicalAnalyzer(sys.argv[1])
-        # synAnalyzer = SyntacticAnalyzer(lexAnalyzer)
-        with open('saida.txt', 'w') as fp:
-            for item in lexAnalyzer.get_token_table(): # aqui precisa ser sincornizada a escrita com o sintático.
-                fp.write(str(item) + '\n')
-            print('Sucesso!', '\n')
-    except FileNotFoundError:
-        print('ERRO: Arquivo nao existe.')
-    except PanicMode:
-        print("Entrou no modo panico") # talvez seja melhor a definição do modo panico estar no sytatic e não no compilador 
+        panic_mode = PanicMode()
+
+        lexAnalyzer = LexicalAnalyzer(sys.argv[1], panic_mode)
+        # synAnalyzer = SyntacticAnalyzer(lexAnalyzer, panic_mode)
+
+        # with open('saida.txt', 'w') as fp:
+        if panic_mode.panic_has_errors():
+            print(panic_mode.errors)
+        else:
+            print('Sucesso!')
     except Exception as ex:
         print(ex)
 

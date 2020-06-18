@@ -1,10 +1,54 @@
-from pprint import pprint
 from LexicalAnalyzer import LexicalAnalyzer
+from PanicMode import PanicMode
 
 class SyntacticAnalyzer() :
+    def __init__(self, lexical: LexicalAnalyzer, panic_mode: PanicMode):
+        self.lexical = lexical
+
+        self.token_number = 0
 
 
-    print("Alanizador sintatico", '\n')
+    def get_next_token(self):
+        token = self.lexical.get_token(self.token_number)
+        self.token_number += 1
+        return token
+
+
+    def programa(self):
+        token = self.get_next_token()
+
+        if token['token'] == 'simb_program':    token = self.get_next_token()
+        # else:   ERRO
+
+        if token['token'] == 'ident':    token = self.get_next_token()
+        # else:   ERRO 
+            
+        if token['token'] != 'simb_ponto_virgula':
+            # ERRO
+
+        # CORPO
+
+        if token['token'] != 'simb_ponto':
+            # ERRO
+
+
+    def corpo(self):
+        # DC
+
+        token = self.get_next_token()
+
+        if token['token'] != 'simb_begin':
+            # ERRO
+
+        # COMANDOS
+
+        token = self.get_next_token()
+
+        if token['token'] != 'simb_end':
+            # ERRO
+
+
+    # print("Alanizador sintatico", '\n')
     # primeiro usaremos o exemplo do professor
     '''
     def __init__(self, uma_copida_do_lexicalAnalyser?):

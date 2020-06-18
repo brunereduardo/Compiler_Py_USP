@@ -1,5 +1,7 @@
 from pprint import pprint
 
+from PanicMode import PanicMode
+
 class LexicalAnalyzer():
     # Tabela de Palavras reservadas da linguagem
     reserved_words_table = {
@@ -24,8 +26,9 @@ class LexicalAnalyzer():
     # Lista de Todos os Tokens
     token_table = []
 
-    def __init__(self, input_file):
+    def __init__(self, input_file, panic_mode: PanicMode):
         self.input_file = input_file
+        self.panic_mode = panic_mode
 
         line_number = 0
         
@@ -94,6 +97,7 @@ class LexicalAnalyzer():
                 elif state == 1:
                     if i >= len(line) - 1:
                         self.token_table.append({'lexema': '{', 'error': 'Comentario nao fechado', 'line': line_number})
+                        self.panic_mode.add_error('lexico', line_number, 'Comentario nao fechado')
 
                     elif char_tmp == '}':
                         state = 2
@@ -104,6 +108,7 @@ class LexicalAnalyzer():
 
                 elif state == 3:
                     self.token_table.append({'lexema': '}', 'error': 'Comentario fechado sem abertura', 'line': line_number})
+                    self.panic_mode.add_error('lexico', line_number, 'Comentario fechado sem abertura')
  
         return begin, end
 
@@ -327,6 +332,7 @@ class LexicalAnalyzer():
                         output = {'token': 'num_inteiro', 'lexema': buffer, 'line': line_number}
                     else:
                         output = {'lexema': buffer, 'error': 'Numero mal formado', 'line': line_number}
+                        self.panic_mode.add_error('lexico', line_number, f'{buffer} - Numero mal formado')
                     break
                 elif character == '.':
                     state = 3
@@ -343,6 +349,7 @@ class LexicalAnalyzer():
                         output = {'token': 'num_real', 'lexema': buffer, 'line': line_number}
                     else:
                         output = {'lexema': buffer, 'error': 'Numero mal formado', 'line': line_number}
+                        self.panic_mode.add_error('lexico', line_number, f'{buffer} - Numero mal formado')
                     break
                 elif character >= '0' and character <= '9':
                     size_count += 1
@@ -351,10 +358,12 @@ class LexicalAnalyzer():
                     
             elif state == 4:
                 output = {'lexema': buffer, 'error': 'Numero com excesso de tamanho', 'line': line_number}
+                self.panic_mode.add_error('lexico', line_number, f'{buffer} - Numero com excesso de tamanho')
                 break
 
             elif state == 6:
                 output = {'lexema': buffer, 'error': 'Numero mal formado', 'line': line_number}
+                self.panic_mode.add_error('lexico', line_number, f'{buffer} - Numero mal formado')
                 break
 
         return output
@@ -378,6 +387,7 @@ class LexicalAnalyzer():
                 elif char > ' ':
                     if len(buffer) == 1:
                         output = {'lexema': buffer, 'error': 'Identificador com caracter invalido', 'line': line_number}
+                        self.panic_mode.add_error('lexico', line_number, f'{buffer} - Identificador com caracter invalido')
                     state = 2
 
             elif state == 1:
@@ -391,10 +401,12 @@ class LexicalAnalyzer():
 
             elif state == 2:
                 output = {'lexema': buffer, 'error': 'Identificador com caracter invalido', 'line': line_number}
+                self.panic_mode.add_error('lexico', line_number, f'{buffer} - Identificador com caracter invalido')
                 break
 
             elif state == 3:
                 output = {'lexema': buffer, 'error': 'Identificador com excesso de tamanho', 'line': line_number}
+                self.panic_mode.add_error('lexico', line_number, f'{buffer} - Identificador com excesso de tamanho')
                 break
 
         return output
