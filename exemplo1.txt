@@ -1,3 +1,7 @@
-program nome1
-{exemplo 1}
+program nome1;
+procedure nome(a, b: integer;);
+var c, d: real;
 begin
+end;
+begin
+end.

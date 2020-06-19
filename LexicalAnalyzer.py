@@ -96,7 +96,7 @@ class LexicalAnalyzer():
 
                 elif state == 1:
                     if i >= len(line) - 1:
-                        self.token_table.append({'lexema': '{', 'error': 'Comentario nao fechado', 'line': line_number})
+                        self.token_table.append({'lexema': '{', 'token': 'Comentario nao fechado', 'line': line_number})
                         self.errors.add_error('lexico', line_number, 'Comentario nao fechado')
 
                     elif char_tmp == '}':
@@ -107,7 +107,7 @@ class LexicalAnalyzer():
                     break
 
                 elif state == 3:
-                    self.token_table.append({'lexema': '}', 'error': 'Comentario fechado sem abertura', 'line': line_number})
+                    self.token_table.append({'lexema': '}', 'token': 'Comentario fechado sem abertura', 'line': line_number})
                     self.errors.add_error('lexico', line_number, 'Comentario fechado sem abertura')
  
         return begin, end
@@ -117,54 +117,59 @@ class LexicalAnalyzer():
         output = None
 
         if character == ')':    output = {'token': 'simb_fpar', 'lexema': ')', 'line': line_number}
-        elif character == '(':  output = {'token': 'simb_par', 'lexema': '(', 'line': line_number}
-            # state = 0
+        elif character == '(':
+            state = 0
 
-            # for i in range(char_position, len(line)):
-            #     char_tmp = line[i]
+            for i in range(char_position, len(line)):
+                char_tmp = line[i]
 
-            #     if state == 0:
-            #         if i >= len(line) - 1:
-            #             output = '(, simb_apar'  
-            #         elif char_tmp == '(':
-            #             state = 1
-            #         elif char_tmp == ')':
-            #             state = 4
+                if state == 0:
+                    if i >= len(line) - 1:
+                        output = {'token': 'simb_par', 'lexema': '(', 'line': line_number}  
+                    elif char_tmp == '(':
+                        state = 1
+                    elif char_tmp == ')':
+                        state = 4
                         
-            #     elif state == 1:
-            #         if i >= len(line) - 1 and char_tmp != ')':
-            #             line_tmp = line.replace("\n", "")
-            #             output = f'{line_tmp}, ERRO: {line_number} - Identacao dos parenteses'
-            #         elif char_tmp == '(':
-            #             state = 2
-            #         elif char_tmp == ')':
-            #             state = 0
+                elif state == 1:
+                    if i >= len(line) - 1 and char_tmp != ')':
+                        line_tmp = line.replace("\n", "")
+                        output = {'lexema': '}', 'token': 'Identacao dos parenteses', 'line': line_number}
+                        self.errors.add_error('lexico', line_number, 'Identacao dos parenteses')
+                    elif char_tmp == '(':
+                        state = 2
+                    elif char_tmp == ')':
+                        state = 0
 
-            #     elif state == 2:
-            #         if i >= len(line) - 1 and char_tmp != ')':
-            #             line_tmp = line.replace("\n", "")
-            #             output = f'{line_tmp}, ERRO: {line_number} - Identacao dos parenteses'
-            #         elif char_tmp == '(':
-            #             state = 3
-            #         elif char_tmp == ')':
-            #             state = 1
+                elif state == 2:
+                    if i >= len(line) - 1 and char_tmp != ')':
+                        line_tmp = line.replace("\n", "")
+                        output = {'lexema': '}', 'token': 'Identacao dos parenteses', 'line': line_number}
+                        self.errors.add_error('lexico', line_number, 'Identacao dos parenteses')
+                    elif char_tmp == '(':
+                        state = 3
+                    elif char_tmp == ')':
+                        state = 1
 
-            #     elif state == 3:
-            #         if i >= len(line) - 1 and char_tmp != ')':
-            #             line_tmp = line.replace("\n", "")
-            #             output = f'{line_tmp}, ERRO: {line_number} - Identacao dos parenteses'
-            #         elif char_tmp == '(':
-            #             state = 5
-            #         elif char_tmp == ')':
-            #             state = 2
+                elif state == 3:
+                    if i >= len(line) - 1 and char_tmp != ')':
+                        line_tmp = line.replace("\n", "")
+                        output = {'lexema': '}', 'token': 'Identacao dos parenteses', 'line': line_number}
+                        self.errors.add_error('lexico', line_number, 'Identacao dos parenteses')
+                    elif char_tmp == '(':
+                        state = 5
+                    elif char_tmp == ')':
+                        state = 2
 
-            #     elif state == 4:
-            #         line_tmp = line.replace("\n", "")
-            #         output = f'{line_tmp}, ERRO: {line_number} - Nao ha parenteses abertos'
+                elif state == 4:
+                    line_tmp = line.replace("\n", "")
+                    output = {'lexema': '}', 'token': 'Identacao dos parenteses', 'line': line_number}
+                    self.errors.add_error('lexico', line_number, 'Nao ha parenteses abertos')
 
-            #     elif state == 5:
-            #         line_tmp = line.replace("\n", "")
-            #         output = f'{line_tmp}, ERRO: {line_number} - Maximo de parenteses atingido'
+                elif state == 5:
+                    line_tmp = line.replace("\n", "")
+                    output = {'lexema': '}', 'token': 'Maximo de parenteses atingido', 'line': line_number}
+                    self.errors.add_error('lexico', line_number, 'Maximo de parenteses atingido')
                     
         else:
             state = 0
@@ -331,7 +336,7 @@ class LexicalAnalyzer():
                     if character >= '0' and character <= '9':
                         output = {'token': 'num_inteiro', 'lexema': buffer, 'line': line_number}
                     else:
-                        output = {'lexema': buffer, 'error': 'Numero mal formado', 'line': line_number}
+                        output = {'lexema': buffer, 'token': 'Numero mal formado', 'line': line_number}
                         self.errors.add_error('lexico', line_number, f'{buffer} - Numero mal formado')
                     break
                 elif character == '.':
@@ -348,7 +353,7 @@ class LexicalAnalyzer():
                     if character >= '0' and character <= '9':
                         output = {'token': 'num_real', 'lexema': buffer, 'line': line_number}
                     else:
-                        output = {'lexema': buffer, 'error': 'Numero mal formado', 'line': line_number}
+                        output = {'lexema': buffer, 'token': 'Numero mal formado', 'line': line_number}
                         self.errors.add_error('lexico', line_number, f'{buffer} - Numero mal formado')
                     break
                 elif character >= '0' and character <= '9':
@@ -357,12 +362,12 @@ class LexicalAnalyzer():
                     state = 6
                     
             elif state == 4:
-                output = {'lexema': buffer, 'error': 'Numero com excesso de tamanho', 'line': line_number}
+                output = {'lexema': buffer, 'token': 'Numero com excesso de tamanho', 'line': line_number}
                 self.errors.add_error('lexico', line_number, f'{buffer} - Numero com excesso de tamanho')
                 break
 
             elif state == 6:
-                output = {'lexema': buffer, 'error': 'Numero mal formado', 'line': line_number}
+                output = {'lexema': buffer, 'token': 'Numero mal formado', 'line': line_number}
                 self.errors.add_error('lexico', line_number, f'{buffer} - Numero mal formado')
                 break
 
@@ -386,7 +391,7 @@ class LexicalAnalyzer():
 
                 elif char > ' ':
                     if len(buffer) == 1:
-                        output = {'lexema': buffer, 'error': 'Identificador com caracter invalido', 'line': line_number}
+                        output = {'lexema': buffer, 'token': 'Identificador com caracter invalido', 'line': line_number}
                         self.errors.add_error('lexico', line_number, f'{buffer} - Identificador com caracter invalido')
                     state = 2
 
@@ -400,12 +405,12 @@ class LexicalAnalyzer():
                     size_count += 1
 
             elif state == 2:
-                output = {'lexema': buffer, 'error': 'Identificador com caracter invalido', 'line': line_number}
+                output = {'lexema': buffer, 'token': 'Identificador com caracter invalido', 'line': line_number}
                 self.errors.add_error('lexico', line_number, f'{buffer} - Identificador com caracter invalido')
                 break
 
             elif state == 3:
-                output = {'lexema': buffer, 'error': 'Identificador com excesso de tamanho', 'line': line_number}
+                output = {'lexema': buffer, 'token': 'Identificador com excesso de tamanho', 'line': line_number}
                 self.errors.add_error('lexico', line_number, f'{buffer} - Identificador com excesso de tamanho')
                 break
 
