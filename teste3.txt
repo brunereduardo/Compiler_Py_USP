@@ -3,5 +3,4 @@ var x: integer;
 begin
 read(a);
 {lendo a vari�vel e imprimindo
-write(x);
 .
