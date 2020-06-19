@@ -20,7 +20,8 @@ class LexicalAnalyzer():
         'then': 'simb_then',
         'if': 'simb_if',
         'do': 'simb_do',
-        'to': 'simb_to'
+        'to': 'simb_to',
+        'for': 'simb_for'
     }
 
     # Lista de Todos os Tokens

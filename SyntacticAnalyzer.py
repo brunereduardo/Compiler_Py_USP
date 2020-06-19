@@ -28,7 +28,6 @@ class SyntacticAnalyzer() :
     def panic_mode(self, seguidores_imediatos = [], seguidores_pai = [], tokens_extras = []) -> bool:
         try:
             while True:
-                print(self.token_atual)
                 if self.token_atual['token'] in seguidores_imediatos:
                     return True
                 
@@ -73,8 +72,7 @@ class SyntacticAnalyzer() :
             self.errors.add_error('sintatico', self.token_atual['line'], 'end esperado')
             self.panic_mode(['simb_ponto'], seguidores_pai)
 
-        if self.token_atual['token'] == 'simb_ponto':    return
-        else:
+        if self.token_atual['token'] != 'simb_ponto':
             self.errors.add_error('sintatico', self.token_atual['line'], '. esperado')
 
 
@@ -130,10 +128,12 @@ class SyntacticAnalyzer() :
                 self.token_atual = self.get_next_token()
                 if self.token_atual['token'] == 'ident':   self.token_atual = self.get_next_token()
                 else:
+                    if self.token_atual['token'] != 'simb_dp':
+                        self.panic_mode(['simb_dp'], seguidores_pai)
                     break
         else:
             self.errors.add_error('sintatico', self.token_atual['line'], 'identificador esperado')
-            self.panic_mode(seguidores_pai)
+            self.panic_mode([], seguidores_pai)
             return
 
         if self.token_atual['token'] == 'simb_dp':    self.token_atual = self.get_next_token()
@@ -157,8 +157,6 @@ class SyntacticAnalyzer() :
 
 
     def dc_p(self, seguidores_pai):
-        parenteses = False
-
         if self.token_atual['token'] == 'simb_procedure':    self.token_atual = self.get_next_token()
         else:
             return
@@ -166,47 +164,47 @@ class SyntacticAnalyzer() :
         if self.token_atual['token'] == 'ident':    self.token_atual = self.get_next_token()
         else:
             self.errors.add_error('sintatico', self.token_atual['line'], 'identificador esperado')
-            self.panic_mode(seguidores_pai)
+            self.panic_mode([], seguidores_pai)
             return
 
-        if self.token_atual['token'] == 'simb_par':    
-            self.token_atual = self.get_next_token()
-            parenteses = True
-        else:
-            self.errors.add_error('sintatico', self.token_atual['line'], '( esperado')
-            self.panic_mode(['ident', 'simb_ponto_virgula'], seguidores_pai)
+        if self.token_atual['token'] == 'simb_par' or self.token_atual['token'] == 'simb_ponto_virgula':
+            if self.token_atual['token'] == 'simb_par':
+                self.token_atual = self.get_next_token()
 
-        while self.token_atual['token'] == 'ident':
-            self.variaveis(['simb_dp'] + seguidores_pai)
+                while True:
+                    self.variaveis(['simb_dp'] + seguidores_pai)
 
-            if self.token_atual['token'] == 'simb_dp':    self.token_atual = self.get_next_token()
-            else:
-                self.errors.add_error('sintatico', self.token_atual['line'], ': esperado')
-                self.panic_mode(['simb_tipo'], seguidores_pai)
+                    if self.token_atual['token'] == 'simb_dp':  self.token_atual = self.get_next_token()
+                    else:
+                        self.errors.add_error('sintatico', self.token_atual['line'], ': esperado')
+                        self.panic_mode(['real, integer'], seguidores_pai)
 
-            if self.token_atual['token'] == 'simb_tipo':    self.token_atual = self.get_next_token()
-            else:
-                self.errors.add_error('sintatico', self.token_atual['line'], 'Tipo de variavel esperado')
-                self.panic_mode(['simb_ponto_virgula'], seguidores_pai)
+                    if self.token_atual['token'] == 'simb_tipo':  
+                        self.token_atual = self.get_next_token()
+                    else:
+                        self.errors.add_error('sintatico', self.token_atual['line'], 'Tipo de variavel esperado')
+                        self.panic_mode(['simb_ponto_virgula', 'simb_fpar'], seguidores_pai)
 
-            if self.token_atual['token'] == 'simb_ponto_virgula':    self.token_atual = self.get_next_token()
+                    if self.token_atual['token'] == 'simb_ponto_virgula':  
+                        self.token_atual = self.get_next_token()
+                    else:
+                        break
+
+                if self.token_atual['token'] == 'simb_fpar':    self.token_atual = self.get_next_token()
+                else:
+                    self.errors.add_error('sintatico', self.token_atual['line'], ') esperado')
+                    self.panic_mode(['simb_ponto_virgula'], seguidores_pai)
+
+            if self.token_atual['token'] == 'simb_ponto_virgula':   self.token_atual = self.get_next_token()
             else:
                 self.errors.add_error('sintatico', self.token_atual['line'], '; esperado')
-                self.panic_mode(['simb_ponto_virgula'], seguidores_pai)
+                self.panic_mode(['simb_var', 'simb_begin'], seguidores_pai)
 
-        if self.token_atual['token'] == 'simb_fpar' and parenteses == True:
-            self.token_atual = self.get_next_token()
+            self.corpo_p(seguidores_pai)
         else:
-            if parenteses == True:
-                self.errors.add_error('sintatico', self.token_atual['line'], ') esperado')
-                self.panic_mode(['simb_ponto_virgula'], seguidores_pai)
-
-        if self.token_atual['token'] == 'simb_ponto_virgula':    self.token_atual = self.get_next_token()
-        else:
-            self.errors.add_error('sintatico', self.token_atual['line'], '; esperado')
-            self.panic_mode(['simb_begin', 'simb_var'], seguidores_pai)
-
-        self.corpo_p(seguidores_pai)
+            self.errors.add_error('sintatico', self.token_atual['line'], 'Procedure mal formado')
+            self.panic_mode([], seguidores_pai)
+            return
 
 
     def variaveis(self, seguidores_pai):
@@ -217,6 +215,7 @@ class SyntacticAnalyzer() :
             return
 
         while self.token_atual['token'] == 'simb_virgula':
+            self.token_atual = self.get_next_token()
             if self.token_atual['token'] == 'ident':    self.token_atual = self.get_next_token()
             else:
                 self.panic_mode([], seguidores_pai)
@@ -280,7 +279,10 @@ class SyntacticAnalyzer() :
 
 
     def comandos(self, seguidores_pai):
-        while self.cmd([';'] + seguidores_pai):
+        primeiro = ['simb_read', 'simb_write', 'simb_for', 'simb_while', 'simb_if', 'ident', 'simb_begin']
+
+        while self.token_atual['token'] in primeiro:
+            self.cmd([';'] + seguidores_pai)
             if self.token_atual['token'] == 'simb_ponto_virgula':    self.token_atual = self.get_next_token()
             else:
                 self.errors.add_error('sintatico', self.token_atual['line'], '; esperado')
@@ -288,7 +290,7 @@ class SyntacticAnalyzer() :
 
 
     def expressao(self, seguidores_pai):
-        self.panic_mode([], seguidores_pai)
+        parenteses = False
         primeiro = ['simb_mais', 'simb_menos', 'ident', 'num_real', 'num_inteiro', 'simb_par']
 
         if self.token_atual['token'] not in primeiro:
@@ -303,9 +305,18 @@ class SyntacticAnalyzer() :
             if self.token_atual['token'] == 'ident' or self.token_atual['token'] == 'num_inteiro' or self.token_atual['token'] == 'num_real':
                 self.token_atual = self.get_next_token()
 
-                
+                if self.token_atual['token'] == 'simb_vezes' or self.token_atual['token'] == 'simb_dividir' or self.token_atual['token'] == 'simb_menos' or self.token_atual['token'] == 'simb_mais':
+                    self.token_atual = self.get_next_token()
 
+            if self.token_atual['token'] == 'simb_par':
+                self.token_atual = self.get_next_token()
+                if self.token_atual['token'] not in primeiro:
+                    self.panic_mode(primeiro, seguidores_pai)
+
+            if self.token_atual['token'] == 'simb_fpar' and parenteses == True:
+                self.token_atual = self.get_next_token()
     
+
     def cmd(self, seguidores_pai):
         if self.token_atual['token'] == 'simb_read' or self.token_atual['token'] == 'simb_write':
             self.token_atual = self.get_next_token()
@@ -332,16 +343,18 @@ class SyntacticAnalyzer() :
             if self.token_atual['token'] == 'simb_atribuicao': self.token_atual = self.get_next_token()
             else:
                 self.errors.add_error('sintatico', self.token_atual['line'], ':= esperado')
-                self.panic_mode(['simb_igual', 'simb_dif', 'simb_maior_igual', 'simb_menor_igual', 'simb_maior', 'simb_menor'], seguidores_pai)
+                self.panic_mode(['simb_mais', 'simb_menos', 'ident', 'num_real', 'num_inteiro'], seguidores_pai)
 
-            self.relacao(['simb_to'] + seguidores_pai)
+            self.expressao(['simb_to'] + seguidores_pai)
 
             if self.token_atual['token'] == 'simb_to': self.token_atual = self.get_next_token()
             else:
                 self.errors.add_error('sintatico', self.token_atual['line'], 'to esperado')
-                self.panic_mode(['simb_igual', 'simb_dif', 'simb_maior_igual', 'simb_menor_igual', 'simb_maior', 'simb_menor'], seguidores_pai)
+                self.panic_mode(['simb_mais', 'simb_menos', 'ident', 'num_real', 'num_inteiro'], seguidores_pai)
 
-            self.relacao(['simb_to'] + seguidores_pai)
+            self.expressao(['simb_to'] + seguidores_pai)
+
+            self.cmd(seguidores_pai)
 
         elif self.token_atual['token'] == 'simb_while':
             self.token_atual = self.get_next_token()
@@ -360,21 +373,32 @@ class SyntacticAnalyzer() :
 
             if self.token_atual['token'] == 'simb_do': self.token_atual = self.get_next_token()
             else:
-                self.errors.add_error('sintatico', self.token_atual['line'], 'to esperado')
+                self.errors.add_error('sintatico', self.token_atual['line'], 'do esperado')
+
+            self.cmd(seguidores_pai)
 
         elif self.token_atual['token'] == 'simb_if':
             self.token_atual = self.get_next_token()
 
             self.condicao(['simb_then'] + seguidores_pai)
 
-            if self.token_atual['token'] == 'simb_else': self.token_atual = self.get_next_token()
+            if self.token_atual['token'] == 'simb_then': 
+                self.token_atual = self.get_next_token()
+                self.cmd(['else'] + seguidores_pai)
+            else:
+                self.errors.add_error('sintatico', self.token_atual['line'], 'then esperado')
+                self.panic_mode(['else'], seguidores_pai)
+
+            if self.token_atual['token'] == 'simb_else': 
+                self.token_atual = self.get_next_token()
+                self.cmd(seguidores_pai)
 
         elif self.token_atual['token'] == 'ident':
             self.token_atual = self.get_next_token()
 
             if self.token_atual['token'] == 'simb_atribuicao':  
                 self.token_atual = self.get_next_token()
-                self.relacao(seguidores_pai)
+                self.expressao(seguidores_pai)
             else:
                 self.argumentos(seguidores_pai)
 
@@ -386,7 +410,3 @@ class SyntacticAnalyzer() :
             if self.token_atual['token'] == 'simb_end': self.token_atual = self.get_next_token()
             else:
                 self.errors.add_error('sintatico', self.token_atual['line'], 'end esperado')
-
-        else:   return False
-
-        return True

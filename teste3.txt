@@ -1,7 +1,7 @@
-program teste3;{teste 3 - testando erro de comentário não fechado, checando comportamento com variável não declarada}
+program teste3;{teste 3 - testando erro de comentï¿½rio nï¿½o fechado, checando comportamento com variï¿½vel nï¿½o declarada}
 var x: integer;
 begin
 read(a);
-{lendo a variável e imprimindo
+{lendo a variï¿½vel e imprimindo
 write(x);
-end.
+.
