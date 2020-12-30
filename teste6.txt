@@ -1,9 +1,0 @@
-program meutestepredileto10;
-const c=1;
-var a, b: integer;
-begin
-read(a);
-b:=c+a+1;
-write(b);
-end.
-{sexto teste, agora sem erros}
