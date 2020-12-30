@@ -1,0 +1,14 @@
+program teste2;
+{teste 2 - testando erro em número real e de caracter fora da linguagem, checando uso do if}
+var a: real;
+procedure nomep(x: real);
+begin
+read(a,b);
+if a<b+x then
+a:=b+2.x10
+else b:=a+x;
+end;
+begin {programa principal}
+read(a,@);
+nomep(a);
+end.

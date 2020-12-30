@@ -1,0 +1,11 @@
+program teste1;
+{teste 1 - testando erro em ident, checando uso do while}
+var a, b, 1b: integer;
+begin
+read(a,b);
+while (b>a) do
+begin
+write(a);
+a:=a+1;
+end;
+end.

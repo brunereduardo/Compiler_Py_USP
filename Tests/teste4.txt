@@ -1,0 +1,7 @@
+program maisumteste;
+{teste 4 - testando erro com caracter fora da linguagem, checando o comando for}
+var i, a: integer;
+begin
+for i:=1 to 5 do
+readd(a,@,1);
+end.

@@ -1,0 +1,6 @@
+program teste3;{teste 3 - testando erro de coment�rio n�o fechado, checando comportamento com vari�vel n�o declarada}
+var x: integer;
+begin
+read(a);
+{lendo a vari�vel e imprimindo
+.
