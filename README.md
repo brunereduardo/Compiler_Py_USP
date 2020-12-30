@@ -12,4 +12,4 @@ erros léxicos, se houver). Para mais informações, basta procurar pelo arquivo
 ```
 python3  compiler.py caminho/nome_do_arquivo_de_entrada.txt 
 ```
-<p>O projeto pertence aos seguintes desenvolvedores:</p><br><a href="https://github.com/brunereduardo">Bruner Eduardo Augusto Albrecht</a></br><br><a href="https://github.com/CarlosSantosJr">Carlos R Dos Santos Junior</a></br><br><a href="https://github.com/ClaytonMiccas">Clayton Miccas Junior</a></br>
+<p><b>O projeto pertence aos seguintes desenvolvedores:</b></p><br><a href="https://github.com/brunereduardo">Bruner Eduardo Augusto Albrecht</a></br><br><a href="https://github.com/CarlosSantosJr">Carlos R Dos Santos Junior</a></br><br><a href="https://github.com/ClaytonMiccas">Clayton Miccas Junior</a></br>
