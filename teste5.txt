@@ -1,7 +1,0 @@
-program outroteste;
-{teste de numero 5 - testando erro de caracter fora da linguagem e número real errado, checando comportamento com comando escrito errado}
-var a, minhavariavel: integer;
-begin
-readd(minhavariavel,@,1.a23);
-a:=2*(minhavariavel+3);
-end.
