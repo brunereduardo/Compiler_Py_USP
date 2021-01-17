@@ -16,7 +16,7 @@ the “for” command, we developed the lexical analyzer for this language. The 
 </p>
 
 <h4 align="center"> 
-	🚧  Construído durante a matéria de Teoria da Computação e Compiladores 🚧 Parte otimizadora do compilador faltante🚧
+	🚧  Built during the subject of Computer Theory and Compilers 🚧 Missing compiler code optimizer 🚧
 </h4>
 
 
