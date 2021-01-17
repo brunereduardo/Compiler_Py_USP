@@ -3,7 +3,7 @@
 
 <img src="https://i.imgur.com/AB1jB3n.jpg" alt="banner" width="640" height="360">
 
-#### [English version here!](https://github.com/brunereduardo/Compiler_Py_USP/blob/master/Documents/README.md=200x200)
+#### [English version here!](https://github.com/brunereduardo/Compiler_Py_USP/blob/master/Documents/README.md)
 
 ## Descrição do Projeto
 <p>Com base na gramática da linguagem P--, disponível nos .PDF em Documents, enriquecida com
@@ -20,7 +20,7 @@ erros léxicos, se houver). Para mais informações, basta procurar pelo arquivo
 </p>
 
 <h4 align="center"> 
-	🚧  Construído durante a matéria de Teoria da Computação e Compiladores 🚧  são necessárias para escalar o código 🚧
+	🚧  Construído durante a matéria de Teoria da Computação e Compiladores 🚧 É necessária a implaementação da parte otimizadora do compilador🚧
 </h4>
 
 ### Pré-requisitos
