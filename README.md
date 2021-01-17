@@ -20,7 +20,7 @@ erros léxicos, se houver). Para mais informações, basta procurar pelo arquivo
 </p>
 
 <h4 align="center"> 
-	🚧  Construído durante a matéria de Teoria da Computação e Compiladores 🚧 É necessária a implaementação da parte otimizadora do compilador🚧
+	🚧  Construído durante a matéria de Teoria da Computação e Compiladores 🚧 Parte otimizadora do compilador faltante🚧
 </h4>
 
 ### Pré-requisitos
