@@ -24,7 +24,7 @@ the “for” command, we developed the lexical analyzer for this language. The 
 To start venturing into the application you will need to install the following tools on your machine:
 [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/). In addition, an editor to work with the code as [VSCode](https://code.visualstudio.com/) will serve all purposes. To prepare the ground for the compilation, respecting the language used, *python*, the essential steps of the parser source codes-***syntacticAnalyzer.py***- and lexicon- ***LexicalAnalyzer.py***-, are basically: having the basic version, python 3 or higher, so that you can have access to an interpreter of the language used and, assuming you have access to a terminal or an IDE for Python, just run the compiler code- ***compiler.py***-so that it uses the lexical analyzer, the parser and the error storage- ***Errors.py***-, at the entry of the txt file to be analyzed. Finally, the compiler generates the output -output.txt- with the analyzes made by the lexicon and syntactic, in order to be used in future implementations. Below is an example of execution, in which you simply use the following command line:
 
-### Rodando a Aplicação 🎲
+### Running the Application 🎲
 
 ```bash
 # Clone this repository
@@ -40,11 +40,11 @@ $ python3  compiler.py < Compiler_Py_USP/Tests/nome_do_arquivo_de_entrada_test.t
 
 ### 🚀 Technology
 
-As seguintes ferramentas e bibliotecas foram usadas na construção do projeto:
+The following tool and libraries were used to build the project:
 
 - JFlap
-- sys
-- pprint 
+- sys.py
+- pprint.py 
 
 ### License
 
