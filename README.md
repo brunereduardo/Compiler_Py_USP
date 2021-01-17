@@ -45,11 +45,11 @@ $ python3  compiler.py < Compiler_Py_USP/Tests/nome_do_arquivo_de_entrada_test.t
 
 ### 🚀 Tecnologias
 
-As seguintes ferramentas e bibliotecas foram usadas na construção do projeto:
+A seguintes ferramenta e bibliotecas foram usadas na construção do projeto:
 
 - JFlap
-- sys
-- pprint 
+- sys.py
+- pprint.py 
 
 ### Licença
 
