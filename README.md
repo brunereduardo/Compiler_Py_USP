@@ -1,4 +1,7 @@
 # Compiler_Py_USP
+
+![Banner](https://i.imgur.com/AB1jB3n.jpg)
+
 #### [English version here!](https://github.com/brunereduardo/Compiler_Py_USP/blob/master/Documents/README.md)
 
 <p>Com base na gramática da linguagem P--, disponível nos .PDF em Documents, enriquecida com
@@ -12,6 +15,9 @@ erros léxicos, se houver). Para mais informações, basta procurar pelo arquivo
 ```
 python3  compiler.py caminho/nome_do_arquivo_de_entrada.txt 
 ```
-<p><b>O projeto pertence aos seguintes desenvolvedores:</b></p><a href="https://github.com/brunereduardo">Bruner Eduardo Augusto Albrecht</a><br></br>
-<a href="https://github.com/CarlosSantosJr">Carlos R Dos Santos Junior</a><br></br>
-<a href="https://github.com/ClaytonMiccas">Clayton Miccas Junior</a>
+### Licença
+
+<p>Este projeto está sob a licença MIT, para mais informações procurar pelo arquivo <a href = "https://github.com/brunereduardo/Compiler_Py_USP/blob/master/LICENSE">LICENSE</a></p>
+
+### Autores
+Implementado e criado com ❤️ por [Bruner Eduardo Augusto Albrecht](https://github.com/brunereduardo) | [Carlos R Dos Santos Junior](https://github.com/CarlosSantosJr) | [Clayton Miccas Junior](https://github.com/ClaytonMiccas) 👋🏽
