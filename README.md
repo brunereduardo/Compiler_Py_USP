@@ -1,8 +1,9 @@
 # Compiler_Py_USP
 
-![Banner](https://i.imgur.com/AB1jB3n.jpg)
 
-#### [English version here!](https://github.com/brunereduardo/Compiler_Py_USP/blob/master/Documents/README.md)
+<img src="https://i.imgur.com/AB1jB3n.jpg" alt="banner" width="640" height="360">
+
+#### [English version here!](https://github.com/brunereduardo/Compiler_Py_USP/blob/master/Documents/README.md=200x200)
 
 <p>Com base na gramática da linguagem P--, disponível nos .PDF em Documents, enriquecida com
 o comando “for”, desenvolvemos o analisador léxico para esta linguagem. Foram produzidos os autômatos projetados (usando a ferramenta JFlap) e o código-fonte correspondente aos autômatos projetados (na linguagem de programação python).</p>
