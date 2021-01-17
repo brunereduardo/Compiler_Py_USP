@@ -16,6 +16,15 @@ erros léxicos, se houver). Para mais informações, basta procurar pelo arquivo
 ```
 python3  compiler.py caminho/nome_do_arquivo_de_entrada.txt 
 ```
+
+### 🚀 Tecnologias
+
+As seguintes ferramentas e bibliotecas foram usadas na construção do projeto:
+
+- JFlap
+- sys
+- pprint 
+
 ### Licença
 
 <p>Este projeto está sob a licença MIT, para mais informações procurar pelo arquivo <a href = "https://github.com/brunereduardo/Compiler_Py_USP/blob/master/LICENSE">LICENSE</a></p>
