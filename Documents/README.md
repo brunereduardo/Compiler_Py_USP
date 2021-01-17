@@ -9,10 +9,10 @@ the “for” command, we developed the lexical analyzer for this language. The 
 <p>The lexical analyzer accepts a txt file with the program written in P-- and produces another txt file with the output, with one chain-token pair per line (indicating the lexical errors, if any). For more information, just search for the .PDF file in the folder <a href="https://github.com/brunereduardo/Compiler_Py_USP/tree/master/Documents">Documents.</a></p>
 
 <p align="center">
-<a href="#Descrição-do-Projeto">Project description</a> •  
-<a href="#Pré-requisitos">Prerequisites</a> •	
+<a href="#Project-description">Project description</a> •  
+<a href="#Prerequisites">Prerequisites</a> •	
 <a href="#License">License</a> • 
-<a href="#Author">Authors</a>
+<a href="#Authors">Authors</a>
 </p>
 
 <h4 align="center"> 
